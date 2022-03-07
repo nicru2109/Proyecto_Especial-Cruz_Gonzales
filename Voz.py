@@ -1,4 +1,4 @@
-## Script para procesamiento en vivo
+## Script para procesamiento en vivo prueba
 import numpy as np
 
 import Funciones as fn
