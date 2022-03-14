@@ -19,9 +19,9 @@ import cv2
 # cv2.destroyAllWindows()
 
 ##
-video = cv2.VideoCapture(r'video.mp4')
+video = cv2.VideoCapture(r'ambas.mp4')
 
-scale = .2
+scale = .25
 
 while video.isOpened():
     ret, frame = video.read()
