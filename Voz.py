@@ -7,6 +7,7 @@ import scipy.signal as sig
 from pyOpenBCI import OpenBCICyton
 from gtts import gTTS
 import pygame
+from Clases import *
 
 # ## Configuracion de palabras SOLO SE GUARDAN UNA VEZ
 # p1 = gTTS(text = "Hola", lang = 'es', slow = False)
