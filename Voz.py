@@ -1,38 +1,18 @@
 ## Script para procesamiento en vivo prueba
 import numpy as np
-
 import Funciones as fn
 from f_SignalProcFuncLibs import *
 import scipy.signal as sig
 from pyOpenBCI import OpenBCICyton
-from gtts import gTTS
 import pygame
 from Clases import *
 
-# ## Configuracion de palabras SOLO SE GUARDAN UNA VEZ
-# p1 = gTTS(text = "Hola", lang = 'es', slow = False)
-# p1.save("p1.mp3")
-#
-# p2 = gTTS(text = "Sí", lang = 'es', slow = False)
-# p2.save("p2.mp3")
-#
-# p3 = gTTS(text = "No", lang = 'es', slow = False)
-# p3.save("p3.mp3")
-
-# p4 = gTTS(text = "No estoy de acuerdo", lang = 'es', slow = False)
-# p4.save("p4.mp3")
-#
-# p5 = gTTS(text = "Me duele", lang = 'es', slow = False)
-# p5.save("p5.mp3")
-#
-# p6 = gTTS(text = "Adiós", lang = 'es', slow = False)
-# p6.save("p6.mp3")
-
+##
 #Calibracion
 
 calibracion = input('¿Desea Calibrar? (si/no)')
 
-
+# Función de adquisición para la calibración
 def adquisicion_cal(sample):
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
@@ -104,18 +84,18 @@ if calibracion == 'si':
 
 elif calibracion == 'no':
 
-    # U_Parpadeo = np.array(np.loadtxt('U_Parpadeo.txt'))
+    U_Parpadeo = np.array(np.loadtxt('U_Parpadeo.txt'))
     U_Derecha_EOG = np.array(np.loadtxt('U_Derecha_EOG.txt'))
     U_Izquierda_EOG = np.array(np.loadtxt('U_Izquierda_EOG.txt'))
 
-    # U_Arriba = np.array(np.loadtxt('U_Arriba.txt'))
-    # U_Arriba = U_Arriba[0]
-    #
-    # U_Izquierda_EMG = np.array(np.loadtxt('U_Izquierda_EMG.txt'))
-    # U_Izquierda_EMG = U_Izquierda_EMG[0]
-    #
-    # U_Derecha_EMG = np.array(np.loadtxt('U_Derecha_EMG.txt'))
-    # U_Derecha_EMG = U_Derecha_EMG[0]
+    U_Arriba = np.array(np.loadtxt('U_Arriba.txt'))
+    U_Arriba = U_Arriba[0]
+
+    U_Izquierda_EMG = np.array(np.loadtxt('U_Izquierda_EMG.txt'))
+    U_Izquierda_EMG = U_Izquierda_EMG[0]
+
+    U_Derecha_EMG = np.array(np.loadtxt('U_Derecha_EMG.txt'))
+    U_Derecha_EMG = U_Derecha_EMG[0]
 
 
 ## Definición de la clase

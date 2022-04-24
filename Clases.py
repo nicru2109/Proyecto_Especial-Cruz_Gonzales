@@ -23,17 +23,27 @@ class pre_wind:
 
             if self.e1 == 'Parpadeo' and self.e2 == 'Derecha':
                 pygame.mixer.init()
-                pygame.mixer.music.load("p1.mp3")
+                pygame.mixer.music.load("mp3//p1.mp3")
                 pygame.mixer.music.play()
 
-            elif self.e1 == 'Izquierda' and self.e2 == 'Izquierda':
+            elif self.e1 == 'Parpadeo' and self.e2 == 'Izquierda':
                 pygame.mixer.init()
-                pygame.mixer.music.load("p2.mp3")
+                pygame.mixer.music.load("mp3//p2.mp3")
                 pygame.mixer.music.play()
 
-            elif self.e1 == 'Derecha' and self.e2 == 'Derecha':
+            elif self.e1 == 'Derecha' and self.e2 == 'Parpadeo':
                 pygame.mixer.init()
-                pygame.mixer.music.load("p3.mp3")
+                pygame.mixer.music.load("mp3//p3.mp3")
+                pygame.mixer.music.play()
+
+            elif self.e1 == 'Izquierda' and self.e2 == 'Parpadeo':
+                pygame.mixer.init()
+                pygame.mixer.music.load("mp3//p4.mp3")
+                pygame.mixer.music.play()
+
+            elif self.e1 == 'Parpadeo' and self.e2 == 'Parpadeo':
+                pygame.mixer.init()
+                pygame.mixer.music.load("mp3//p5.mp3")
                 pygame.mixer.music.play()
 
             self.count = 0
@@ -47,17 +57,17 @@ class pre_wind:
                 if self.e1 == 'Parpadeo':
 
                     pygame.mixer.init()
-                    pygame.mixer.music.load("p4.mp3")
+                    pygame.mixer.music.load("mp3//p6.mp3")
                     pygame.mixer.music.play()
 
                 elif self.e1 == 'Derecha':
                     pygame.mixer.init()
-                    pygame.mixer.music.load("p5.mp3")
+                    pygame.mixer.music.load("mp3//p7.mp3")
                     pygame.mixer.music.play()
 
                 elif self.e1 == 'Izquierda':
                     pygame.mixer.init()
-                    pygame.mixer.music.load("p6.mp3")
+                    pygame.mixer.music.load("mp3//p8.mp3")
                     pygame.mixer.music.play()
 
 

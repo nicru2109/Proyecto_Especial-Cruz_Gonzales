@@ -1,10 +1,11 @@
-
+# Funciones
 from f_SignalProcFuncLibs import *
 import scipy.signal as sig
 from pyOpenBCI import OpenBCICyton
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Función filtro promedio
 def f_AvFlt(data, w, t):
 
     data = data.squeeze()
@@ -30,6 +31,7 @@ def f_AvFlt(data, w, t):
 
     return temp
 
+# Función para calcular umbral en la etapa de calibración
 def Calcular_Umbral (data, tipo):
 
     if tipo == 'EOG':
@@ -66,6 +68,7 @@ def Calcular_Umbral (data, tipo):
         return Umbral
 
 
+# Función principal de calibración
 def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
 
     inc_data = np.array(inc_data)
@@ -144,7 +147,7 @@ def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
     else:
         print('Palabra Incorrecta')
 
-
+# Identificar el patrón individual de EOG
 def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
 
     #U_variable son arreglos con umbral de señal derecha positiva, izquierda positiva, derecha negativa
@@ -171,5 +174,13 @@ def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
         Mov = 'Izquierda'
 
     return Mov
+
+# Función de adquisición para la calibración
+# def adquisicion_cal(sample):
+#     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
+#
+#     if len(inc_data) == 1700:
+#         board.stop_stream()
+
 
 
