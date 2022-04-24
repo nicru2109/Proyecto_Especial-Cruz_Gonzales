@@ -25,6 +25,7 @@ class pre_wind:
                 pygame.mixer.init()
                 pygame.mixer.music.load("mp3//p1.mp3")
                 pygame.mixer.music.play()
+                #guardar mov en variable
 
             elif self.e1 == 'Parpadeo' and self.e2 == 'Izquierda':
                 pygame.mixer.init()

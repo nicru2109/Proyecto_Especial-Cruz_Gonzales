@@ -7,17 +7,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 s_SRate = 250 # Hertz
-
-
 inc_data = []
 
-def adquisicion_cal(sample):
-    inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
-    if len(inc_data) == 1700:
-        board.stop_stream()
 
 ##
+
+Tipo_Señal = input('Indique la señal')
+Tipo_Movimiento = input('Indique el movimiento')
 
 board = OpenBCICyton(port='COM3')
 uVolts_per_count = (4500000)/24/(2**23-1) #uV/count
@@ -31,16 +28,19 @@ board.write_command('4')
 board.write_command('7')
 board.write_command('8')
 
+
+def adquisicion_cal(sample):
+    inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
+
+    if len(inc_data) == 1700:
+        board.stop_stream()
+
 board.start_stream(adquisicion_cal)
 
 
 
 ##
 inc_data = np.array(inc_data)
-
-Tipo_Señal = input('Indique la señal')
-Tipo_Movimiento = input('Indique el movimiento')
-
 
 filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 57], [15, 59])
@@ -110,24 +110,15 @@ elif Tipo_Señal == 'EMG':
 else:
     print('Inconcluso')
 
-
-
-
-
-
-
-
-
-
-
 ##
-plt.figure()
-plt.plot(diff_izq_eog_avg, 'b')
-plt.plot(diff_der_eog_avg, 'r')
-plt.title('Señal procesada')
-plt.xlabel('No. Muestra')
-plt.ylabel('Amplitud [mV]')
-##
+# plt.figure()
+# plt.plot(diff_izq_eog_avg, 'b')
+# plt.plot(diff_der_eog_avg, 'r')
+# plt.title('Señal procesada')
+# plt.xlabel('No. Muestra')
+# plt.ylabel('Amplitud [mV]')
+#
+
 
 
 

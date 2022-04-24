@@ -1,9 +1,9 @@
 # Funciones
 from f_SignalProcFuncLibs import *
-import scipy.signal as sig
-from pyOpenBCI import OpenBCICyton
-import matplotlib.pyplot as plt
 import numpy as np
+import random
+import scipy.signal as sig
+import cv2
 
 # Función filtro promedio
 def f_AvFlt(data, w, t):
@@ -175,12 +175,72 @@ def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
 
     return Mov
 
-# Función de adquisición para la calibración
-# def adquisicion_cal(sample):
-#     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
-#
-#     if len(inc_data) == 1700:
-#         board.stop_stream()
+
+#Reproducir video
+
+def play_video(file_name):
+
+    video = cv2.VideoCapture(file_name)
+
+    if (video.isOpened() == False):
+        print ('Error')
+
+    while (video.isOpened()):
+        ret, frame = video.read()
+
+        if ret == True:
+            frame = cv2.resize(frame, dsize=(920, 780), interpolation=cv2.INTER_AREA)
+            cv2.imshow("video", frame)
+
+            if cv2.waitKey(15) & 0xFF == ord('m'):
+                break
+
+        else:
+            break
+
+    video.release()
+    cv2.destroyAllWindows()
+
+# Generador de movimientos aleatorios
+def mov_list(mode='train', **movimientos):
+    if mode=='train':
+        reps = 3
+    elif mode=='test':
+        reps = 5
+    else:
+        raise Exception('Invalid mode. Expected "train" or "test"')
+
+    movs = []
+
+    for mov in movimientos:
+
+        movs = movs + ([movimientos[mov]] * reps)
+
+    random.shuffle(movs)
+
+    return movs
+
+#Reproducir video
+def play_vid(mov):
+
+    path = 'mp4//' + mov + '.mp4'
+
+    video = cv2.VideoCapture(path)
+
+    scale = .2
+
+    while video.isOpened():
+        ret, frame = video.read()
+        # if frame is read correctly ret is True
+        if not ret:
+            break
+        dsize = (int(frame.shape[1] * scale), int(frame.shape[0] * scale))
+        frame = cv2.resize(frame, dsize)
+        cv2.imshow('frame', frame)
+        if cv2.waitKey(27) == 27:
+            break
+    video.release()
+    cv2.destroyAllWindows()
 
 
 

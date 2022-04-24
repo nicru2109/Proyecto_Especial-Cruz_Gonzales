@@ -6,30 +6,11 @@ from f_SignalProcFuncLibs import *
 import numpy as np
 import Funciones as fn
 from pyOpenBCI import OpenBCICyton
-import random
 import scipy.signal as sig
-import cv2
 import time
 
 ## Funciones
-# Generador de movimientos aleatorios
-def mov_list(mode='train', **movimientos):
-    if mode=='train':
-        reps = 3
-    elif mode=='test':
-        reps = 5
-    else:
-        raise Exception('Invalid mode. Expected "train" or "test"')
 
-    movs = []
-
-    for mov in movimientos:
-
-        movs = movs + ([movimientos[mov]] * reps)
-
-    random.shuffle(movs)
-
-    return movs
 
 # Funcion de adquisición de la calibración
 def adquisicion_cal(sample):
@@ -96,7 +77,8 @@ def sesiones(movs_list, mode='train'):
         pygame.mixer.music.load("mp3//demo.mp3")
         pygame.mixer.music.play()
 
-        play_vid(mov)
+
+        fn.play_vid(mov)
 
         time.sleep(0.5)
 
@@ -114,26 +96,6 @@ def sesiones(movs_list, mode='train'):
             time.sleep(3)
 
 # Función para mostrar videos
-def play_vid(mov):
-
-    path = 'mp4//' + mov + '.mp4'
-
-    video = cv2.VideoCapture(path)
-
-    scale = .2
-
-    while video.isOpened():
-        ret, frame = video.read()
-        # if frame is read correctly ret is True
-        if not ret:
-            break
-        dsize = (int(frame.shape[1] * scale), int(frame.shape[0] * scale))
-        frame = cv2.resize(frame, dsize)
-        cv2.imshow('frame', frame)
-        if cv2.waitKey(27) == 27:
-            break
-    video.release()
-    cv2.destroyAllWindows()
 
 ##
 

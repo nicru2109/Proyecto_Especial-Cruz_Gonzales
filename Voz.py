@@ -203,6 +203,7 @@ def adquisicion(sample):
         procesamiento(ventana.data)
         inc_data.clear()
 
+
 def procesamiento(data):
     sig_arr_emg = sig.detrend(data[:, 0])
     sig_der_emg = sig.detrend(data[:, 1])
