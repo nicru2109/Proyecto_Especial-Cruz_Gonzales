@@ -11,8 +11,6 @@ import time
 
 ## Funciones
 
-
-# Funcion de adquisición de la calibración
 def adquisicion_cal(sample):
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
@@ -55,12 +53,6 @@ def procesamiento(data):
     diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
     diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
 
-    # Maximo de ventana
-
-    diff_izq_emg_avg = np.max(sig_izq_emg)
-    diff_der_emg_avg = np.max(sig_der_emg)
-    diff_arr_emg_avg = np.max(sig_arr_emg)
-
     # Movimiento EOG
 
     Mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG)
@@ -95,7 +87,7 @@ def sesiones(movs_list, mode='train'):
 
             time.sleep(3)
 
-# Función para mostrar videos
+
 
 ##
 

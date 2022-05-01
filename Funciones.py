@@ -163,15 +163,15 @@ def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
 
     elif ventana_der[picos_der[0]] < -4 and ventana_izq[picos_izq[0]] < -4 \
             and ventana_der[picos_der[-1]] > 4 and ventana_izq[picos_izq[-1]] > 4:
-        Mov = 'Parpadeo'
+        Mov = 'P'
 
     elif ventana_der[picos_der[0]] < U_Derecha[2] and ventana_izq[picos_izq[0]] > U_Derecha[1] \
         and ventana_der[picos_der[-1]] > U_Derecha[0] and ventana_izq[picos_izq[-1]] < U_Derecha[3]:
-        Mov = 'Derecha'
+        Mov = 'D'
 
     elif ventana_der[picos_der[0]] > U_Izquierda[1] and ventana_izq[picos_izq[0]] <  U_Izquierda[3] \
         and ventana_der[picos_der[-1]] < U_Izquierda[2] and ventana_izq[picos_izq[-1]] > U_Izquierda[0]:
-        Mov = 'Izquierda'
+        Mov = 'I'
 
     return Mov
 
@@ -241,6 +241,8 @@ def play_vid(mov):
             break
     video.release()
     cv2.destroyAllWindows()
+
+
 
 
 
