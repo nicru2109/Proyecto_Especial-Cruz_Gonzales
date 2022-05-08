@@ -206,7 +206,7 @@ def mov_list(mode='train', **movimientos):
     if mode=='train':
         reps = 3
     elif mode=='test':
-        reps = 5
+        reps = 1
     else:
         raise Exception('Invalid mode. Expected "train" or "test"')
 

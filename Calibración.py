@@ -13,8 +13,8 @@ inc_data = []
 
 ##
 
-Tipo_Señal = input('Indique la señal')
-Tipo_Movimiento = input('Indique el movimiento')
+Tipo_Señal = input('Indique la señal (EOG o EMG): ')
+Tipo_Movimiento = input('Indique el movimiento: ')
 
 board = OpenBCICyton(port='COM3')
 uVolts_per_count = (4500000)/24/(2**23-1) #uV/count

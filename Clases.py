@@ -199,19 +199,6 @@ class pre_wind:
             self.e1 = 'Nada'
             self.e2 = 'Nada'
 
-        #Guardar el arreglo de respuesta
-
-        if sig_type == 'EOG':
-
-            if len(self.array) == 40:
-                np.savetxt('EOG_Exp_Mov.txt', self.array)
-                self.array.clear()
-
-        elif sig_type == 'EMG':
-
-            if len(self.array) == 20:
-                np.savetxt('EMG_Exp_Mov.txt', self.array)
-                self.array.clear()
 
 class proc_wind:
     def __init__(self, channels, window, act):

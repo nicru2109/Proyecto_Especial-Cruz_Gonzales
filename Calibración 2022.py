@@ -41,15 +41,15 @@ Umbral = fn.Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento)
 #Guardar umbral en variable
 if Tipo_Señal == 'EOG':
     if Tipo_Movimiento == 'Parpadeo':
-        np.savetxt('U_Parpadeo.txt', Umbral)
+        np.savetxt('trhlds//U_Parpadeo.txt', Umbral)
         U_Parpadeo = Umbral
 
     elif Tipo_Movimiento == 'Derecha':
-        np.savetxt('U_Derecha_EOG.txt', Umbral)
+        np.savetxt('trhlds//U_Derecha_EOG.txt', Umbral)
         U_Derecha_EOG = Umbral
 
     elif Tipo_Movimiento == 'Izquierda':
-        np.savetxt('U_Izquierda_EOG.txt', Umbral)
+        np.savetxt('trhlds//U_Izquierda_EOG.txt', Umbral)
         U_Izquierda_EOG = Umbral
     else:
         print('Palabra incorrecta')
@@ -57,18 +57,18 @@ if Tipo_Señal == 'EOG':
 elif Tipo_Señal == 'EMG':
     if Tipo_Movimiento == 'Arriba':
         Umbral = np.array([Umbral, 0])
-        np.savetxt('U_Arriba.txt', Umbral)
+        np.savetxt('trhlds//U_Arriba.txt', Umbral)
         U_Arriba = Umbral[0]
 
     elif Tipo_Movimiento == 'Derecha':
         Umbral = np.array([Umbral, 0])
-        np.savetxt('U_Derecha_EMG.txt', Umbral)
+        np.savetxt('trhlds//U_Derecha_EMG.txt', Umbral)
         U_Derecha_EMG = Umbral[0]
 
 
     elif Tipo_Movimiento == 'Izquierda':
         Umbral = np.array([Umbral, 0])
-        np.savetxt('U_Izquierda_EMG.txt', Umbral)
+        np.savetxt('trhlds//U_Izquierda_EMG.txt', Umbral)
         U_Izquierda_EMG = Umbral[0]
 
 else:
