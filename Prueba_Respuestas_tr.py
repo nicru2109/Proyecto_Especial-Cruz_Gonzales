@@ -161,6 +161,7 @@ def procesamiento(data):
     axs[4].cla()
 
     axs[0].plot(sig_arr_emg)
+    axs
     axs[1].plot(sig_der_emg)
     axs[2].plot(sig_izq_emg)
     axs[3].plot(sig_der_eog_avg)
