@@ -9,7 +9,7 @@ import scipy.signal as sig
 import cv2
 import time
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 ## Constantes
 
@@ -154,59 +154,72 @@ def procesamiento(data):
     sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
     sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
 
-    # Primera derivada
+    axs[0].cla()
+    axs[1].cla()
+    axs[2].cla()
+    axs[3].cla()
+    axs[4].cla()
 
-    diff_izq_eog = np.diff(sig_izq_eog_avg)
-    diff_der_eog = np.diff(sig_der_eog_avg)
+    axs[0].plot(sig_arr_emg)
+    axs[1].plot(sig_der_emg)
+    axs[2].plot(sig_izq_emg)
+    axs[3].plot(sig_der_eog_avg)
+    axs[4].plot(sig_izq_eog_avg)
 
-    # Suavizado 2
+    plt.pause(0.1)
+    # # Primera derivada
+    #
+    # diff_izq_eog = np.diff(sig_izq_eog_avg)
+    # diff_der_eog = np.diff(sig_der_eog_avg)
+    #
+    # # Suavizado 2
+    #
+    # diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
+    # diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    #
+    # # Maximo de ventana
+    #
+    # diff_izq_emg_avg = np.max(sig_izq_emg)
+    # diff_der_emg_avg = np.max(sig_der_emg)
+    # diff_arr_emg_avg = np.max(sig_arr_emg)
+    #
+    # # Movimiento EOG
+    # Mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG)
+    #
+    # if Mov != 'Nada':
+    #     print(Mov)
+    #
+    # Movimiento.actualizar(Mov)
 
-    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
 
-    # Maximo de ventana
-
-    diff_izq_emg_avg = np.max(sig_izq_emg)
-    diff_der_emg_avg = np.max(sig_der_emg)
-    diff_arr_emg_avg = np.max(sig_arr_emg)
-
-    # Movimiento EOG
-    Mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG)
-
-    if Mov != 'Nada':
-        print(Mov)
-
-    Movimiento.actualizar(Mov)
-
-
-    if diff_arr_emg_avg > U_Arriba and not diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG:
-        arriba1 = True
-        #gui.keyDown(keys.arr)
-        print('EMG arriba')
-    else:
-        arriba1 = False
-    if diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG and not diff_arr_emg_avg > U_Arriba:
-        derecha1 = True
-        #gui.keyDown(keys.der)
-        print('EMG derecha')
-    else:
-        derecha1 = False
-    if diff_izq_emg_avg > U_Izquierda_EMG and not diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
-        izquierda1 = True
-        #gui.keyDown(keys.izq)
-        print('EMG izquierda')
-    else:
-        izquierda1 = False
-    if diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
-        abajo1 = True
-        #gui.keyDown(keys.ab)
-        print('EMG abajo')
-    else:
-        abajo1 = False
-    if diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and diff_arr_emg_avg > U_Arriba:
-        todos1 = True
-        #keys.change()
-        print('EMG todos')
+    # if diff_arr_emg_avg > U_Arriba and not diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG:
+    #     arriba1 = True
+    #     #gui.keyDown(keys.arr)
+    #     print('EMG arriba')
+    # else:
+    #     arriba1 = False
+    # if diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG and not diff_arr_emg_avg > U_Arriba:
+    #     derecha1 = True
+    #     #gui.keyDown(keys.der)
+    #     print('EMG derecha')
+    # else:
+    #     derecha1 = False
+    # if diff_izq_emg_avg > U_Izquierda_EMG and not diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
+    #     izquierda1 = True
+    #     #gui.keyDown(keys.izq)
+    #     print('EMG izquierda')
+    # else:
+    #     izquierda1 = False
+    # if diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
+    #     abajo1 = True
+    #     #gui.keyDown(keys.ab)
+    #     print('EMG abajo')
+    # else:
+    #     abajo1 = False
+    # if diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and diff_arr_emg_avg > U_Arriba:
+    #     todos1 = True
+    #     #keys.change()
+    #     print('EMG todos')
 
 
 ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
@@ -224,5 +237,7 @@ board.write_command('4')
 # board.write_command('6')
 board.write_command('7')
 board.write_command('8')
+
+fig, axs = plt.subplots(5, 1)
 
 board.start_stream(adquisicion)
