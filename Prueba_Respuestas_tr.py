@@ -161,10 +161,15 @@ def procesamiento(data):
     axs[4].cla()
 
     axs[0].plot(sig_arr_emg)
+    axs[0].set_ylim([-200, 200])
     axs[1].plot(sig_der_emg)
+    axs[1].set_ylim([-200, 200])
     axs[2].plot(sig_izq_emg)
+    axs[2].set_ylim([-200, 200])
     axs[3].plot(sig_der_eog_avg)
+    axs[3].set_ylim([-400, 400])
     axs[4].plot(sig_izq_eog_avg)
+    axs[4].set_ylim([-400, 400])
 
     plt.pause(0.1)
     # # Primera derivada

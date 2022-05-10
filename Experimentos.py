@@ -139,6 +139,7 @@ def procesamiento(data):
 
     else:
         mov_emg = 'Nada'
+        Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
 
 
