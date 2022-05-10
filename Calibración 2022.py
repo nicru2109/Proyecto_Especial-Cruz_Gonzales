@@ -2,6 +2,7 @@
 import Funciones as fn
 from pyOpenBCI import OpenBCICyton
 import numpy as np
+import pygame
 
 #
 Tipo_Señal = input('Indique el tipo de señal') #EOG/EMG
@@ -28,6 +29,11 @@ board.write_command('8')
 
 # Toma de datos
 def adquisicion_cal(sample):
+    if len(inc_data) == 0:
+        pygame.mixer.init()
+        pygame.mixer.music.load("mp3//go.mp3")
+        pygame.mixer.music.play()
+
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
     if len(inc_data) == 1700:
