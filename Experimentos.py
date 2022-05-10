@@ -164,7 +164,12 @@ if mode == 'train':
     elif Tipo_Señal == "EMG" :
         movs_list = fn.mov_list(mode=mode, **dic_EMG)
 
-for mov in movs_list:
+Movimiento = pre_wind()
+ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
+
+fn.play_vid('C')
+
+for i in range(len(movs_list)):
 
     pygame.mixer.init()
     pygame.mixer.music.load("mp3//demo.mp3")
@@ -172,7 +177,7 @@ for mov in movs_list:
 
     time.sleep(1.5)
 
-    fn.play_vid(mov)
+    fn.play_vid(movs_list[i])
 
     time.sleep(0.5)
 
@@ -181,9 +186,12 @@ for mov in movs_list:
 
     time.sleep(3)
 
-    ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
-    Movimiento = pre_wind()
+
+
     board.start_stream(adquisicion)
+
+    if len(Movimiento.array) < i + 1:
+        Movimiento.add_null()
 
 result = {'Anotacion': movs_list, 'Resultado': Movimiento.array}
 

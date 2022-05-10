@@ -237,7 +237,7 @@ def play_vid(mov):
         dsize = (int(frame.shape[1] * scale), int(frame.shape[0] * scale))
         frame = cv2.resize(frame, dsize)
         cv2.imshow('frame', frame)
-        if cv2.waitKey(27) == 27:
+        if cv2.waitKey(120) == 120:
             break
     video.release()
     cv2.destroyAllWindows()

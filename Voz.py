@@ -84,17 +84,17 @@ if calibracion == 'si':
 
 elif calibracion == 'no':
 
-    U_Parpadeo = np.array(np.loadtxt('U_Parpadeo.txt'))
-    U_Derecha_EOG = np.array(np.loadtxt('U_Derecha_EOG.txt'))
-    U_Izquierda_EOG = np.array(np.loadtxt('U_Izquierda_EOG.txt'))
+    U_Parpadeo = np.array(np.loadtxt('trhlds//U_Parpadeo.txt'))
+    U_Derecha_EOG = np.array(np.loadtxt('trhlds//U_Derecha_EOG.txt'))
+    U_Izquierda_EOG = np.array(np.loadtxt('trhlds//U_Izquierda_EOG.txt'))
 
-    U_Arriba = np.array(np.loadtxt('U_Arriba.txt'))
+    U_Arriba = np.array(np.loadtxt('trhlds//U_Arriba.txt'))
     U_Arriba = U_Arriba[0]
 
-    U_Izquierda_EMG = np.array(np.loadtxt('U_Izquierda_EMG.txt'))
+    U_Izquierda_EMG = np.array(np.loadtxt('trhlds//U_Izquierda_EMG.txt'))
     U_Izquierda_EMG = U_Izquierda_EMG[0]
 
-    U_Derecha_EMG = np.array(np.loadtxt('U_Derecha_EMG.txt'))
+    U_Derecha_EMG = np.array(np.loadtxt('trhlds//U_Derecha_EMG.txt'))
     U_Derecha_EMG = U_Derecha_EMG[0]
 
 

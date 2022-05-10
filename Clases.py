@@ -13,6 +13,9 @@ class pre_wind:
         self.e1 = 'Nada'
         self.e2 = 'Nada'
 
+    def add_null(self):
+        self.array.append('Nada')
+
     def actualizar(self, Var = 'Nada', mode = 'train', sig_type = 'EOG'):
         self.count += 1
         if Var != 'Nada':
