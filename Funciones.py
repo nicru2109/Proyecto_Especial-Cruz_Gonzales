@@ -47,13 +47,13 @@ def Calcular_Umbral (data, tipo):
         Izq = np.array([vent_izq[picos_izq]])
 
         der_pos = Der[Der > 0]
-        U_pos_der = (np.mean(der_pos) - a) + (np.mean(der_pos) - a)*0.15
+        U_pos_der = (np.mean(der_pos) - a) + (np.mean(der_pos) - a)*0.30
 
         der_neg = Der[Der < 0]
-        U_neg_der = (np.mean(der_neg) + a) + (np.mean(der_neg) + a)*0.15
+        U_neg_der = (np.mean(der_neg) + a) + (np.mean(der_neg) + a)*0.30
 
         izq_pos = Izq[Izq > 0]
-        U_pos_izq = (np.mean(izq_pos) - a) + (np.mean(izq_pos) - a)*0.15
+        U_pos_izq = (np.mean(izq_pos) - a) + (np.mean(izq_pos) - a)*0.30
 
         izq_neg = Izq[Izq < 0]
         U_neg_izq = (np.mean(izq_neg) + a) + (np.mean(izq_neg) + a)*0.15
