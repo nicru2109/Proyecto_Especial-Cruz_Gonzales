@@ -11,6 +11,8 @@ from f_SignalProcFuncLibs import *
 
 #Constantes
 s_SRate = 250  # Hertz
+window = 1 # segundos
+act = 0.25 # segundos
 
 filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 50], [15, 52])
@@ -18,7 +20,7 @@ filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 50], [15, 52])
 ##
 
 # Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba.txt'), header=4)
-Temp_read1 = pd.read_csv(os.path.join('initial_tests', '5.txt'), header=4)
+Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba2.txt'), header=4)
 Temp1 = Temp_read1[[' EXG Channel 0', ' EXG Channel 1', ' EXG Channel 2', ' EXG Channel 4',  ' EXG Channel 5']].to_numpy()
 Temp1 = Temp1[250:, :]
 
@@ -39,27 +41,27 @@ def procesamiento(data):
     sig_izq_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_izq_eog)
     sig_der_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_der_eog)
 
-    # # Artefactos en los bordes
-    # sig_arr_emg = sig_arr_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    # sig_der_emg = sig_der_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    # sig_izq_emg = sig_izq_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    # sig_der_eog = sig_der_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    # sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    # Artefactos en los bordes
+    sig_arr_emg = sig_arr_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    sig_der_emg = sig_der_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    sig_izq_emg = sig_izq_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    sig_der_eog = sig_der_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
 
     # Suavizado
     sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
     sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
 
-    # # Primera derivada
-    #
-    # diff_izq_eog = np.diff(sig_izq_eog_avg)
-    # diff_der_eog = np.diff(sig_der_eog_avg)
-    #
-    # # Suavizado 2
-    #
-    # diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-    # diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    # Primera derivada
 
+    diff_izq_eog = np.diff(sig_izq_eog_avg)
+    diff_der_eog = np.diff(sig_der_eog_avg)
+
+    # Suavizado 2
+
+    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
+    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    #
     # # Maximo de ventana
     #
     # diff_izq_emg_avg = np.max(sig_izq_emg)
@@ -96,33 +98,23 @@ def procesamiento(data):
     # else:
     #     mov_emg = 'Nada'
 
-    return np.array([sig_arr_emg, sig_der_emg, sig_izq_emg, sig_der_eog_avg, sig_izq_eog_avg])
+    return np.array([sig_arr_emg, sig_der_emg, sig_izq_eog, diff_der_eog_avg, diff_izq_eog_avg])
 
 
 data_pr = procesamiento(Temp1)
 
-FFTs = np.fft.rfft(Temp1.T)
-FFTs_freqs = np.fft.rfftfreq(len(Temp1), d=1./s_SRate)
+# FFTs = np.fft.rfft(Temp1.T)
+# FFTs_freqs = np.fft.rfftfreq(len(Temp1), d=1./s_SRate)
 
 ##
-fig, axs = plt.subplots(3, 5)
+plt.figure()
+plt.plot(data_pr[3], 'b')
+plt.plot(data_pr[4], 'r')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
 
-axs[1, 0].plot(data_pr[0, :])
-axs[0, 0].plot(Temp1[:, 0])
-axs[2, 0].plot(FFTs_freqs, FFTs[0, :])
 
-axs[1, 1].plot(data_pr[1, :])
-axs[0, 1].plot(Temp1[:, 1])
-axs[2, 1].plot(FFTs_freqs, FFTs[1, :])
+#hola
+##
 
-axs[1, 2].plot(data_pr[2, :])
-axs[0, 2].plot(Temp1[:, 2])
-axs[2, 2].plot(FFTs_freqs, FFTs[2, :])
-
-axs[1, 3].plot(data_pr[3, :])
-axs[0, 3].plot(Temp1[:, 3])
-axs[2, 3].plot(FFTs_freqs, FFTs[3, :])
-
-axs[1, 4].plot(data_pr[4, :])
-axs[0, 4].plot(Temp1[:, 4])
-axs[2, 4].plot(FFTs_freqs, FFTs[4, :])

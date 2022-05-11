@@ -118,27 +118,27 @@ def procesamiento(data):
     # Movimiento EMG
 
     if diff_arr_emg_avg > U_Arriba and not diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG:
-        mov = 'MF'
-        print(mov)
+        mov_emg = 'MF'
+        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     elif diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG and not diff_arr_emg_avg > U_Arriba:
-        mov = 'CD'
-        print(mov)
+        mov_emg = 'CD'
+        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     elif diff_izq_emg_avg > U_Izquierda_EMG and not diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
-        mov = 'CI'
-        print(mov)
+        mov_emg = 'CI'
+        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     elif diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
-        mov = 'C'
-        print(mov)
+        mov_emg = 'C'
+        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     else:
-        mov = 'Nada'
+        mov_emg = 'Nada'
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
 
