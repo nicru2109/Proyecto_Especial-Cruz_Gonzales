@@ -47,16 +47,16 @@ def Calcular_Umbral (data, tipo):
         Izq = np.array([vent_izq[picos_izq]])
 
         der_pos = Der[Der > 0]
-        U_pos_der = np.mean(der_pos) - a
+        U_pos_der = (np.mean(der_pos) - a) + (np.mean(der_pos) - a)*0.15
 
         der_neg = Der[Der < 0]
-        U_neg_der = np.mean(der_neg) + a
+        U_neg_der = (np.mean(der_neg) + a) + (np.mean(der_neg) + a)*0.15
 
         izq_pos = Izq[Izq > 0]
-        U_pos_izq = np.mean(izq_pos) - a
+        U_pos_izq = (np.mean(izq_pos) - a) + (np.mean(izq_pos) - a)*0.15
 
         izq_neg = Izq[Izq < 0]
-        U_neg_izq = np.mean(izq_neg) + a
+        U_neg_izq = (np.mean(izq_neg) + a) + (np.mean(izq_neg) + a)*0.15
 
         return U_pos_der, U_pos_izq, U_neg_der, U_neg_izq
 
@@ -84,14 +84,14 @@ def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
         sig_izq_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_izq_eog)
         sig_der_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_der_eog)
 
-        sig_izq_eog_avg = f_AvFlt(sig_izq_eog, s_SRate, 0.08)
-        sig_der_eog_avg = f_AvFlt(sig_der_eog, s_SRate, 0.08)
+        sig_izq_eog_avg = f_AvFlt(sig_izq_eog, s_SRate, 0.2)
+        sig_der_eog_avg = f_AvFlt(sig_der_eog, s_SRate, 0.2)
 
         diff_izq_eog = np.diff(sig_izq_eog_avg)
         diff_der_eog = np.diff(sig_der_eog_avg)
 
-        diff_izq_eog_avg = f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-        diff_der_eog_avg = f_AvFlt(diff_der_eog, s_SRate, 0.08)
+        diff_izq_eog_avg = f_AvFlt(diff_izq_eog, s_SRate, 0.2)
+        diff_der_eog_avg = f_AvFlt(diff_der_eog, s_SRate, 0.2)
 
         data = np.array([diff_der_eog_avg, diff_izq_eog_avg])
 
