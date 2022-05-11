@@ -214,3 +214,27 @@ class proc_wind:
         self.data[:-ind, :] = temp
         self.data[-ind:, :] = np.array(inc_data)
 
+class sig_sym:
+    def __init__(self, data, sRate):
+        self.data = data
+        self.delay = 1 / sRate
+        self.len = len(data)
+        self.count = 0
+
+        if self.count < self.len:
+            self.is_left = True
+    def get(self):
+
+        time.sleep(self.delay)
+
+        temp = data[self.count]
+
+        self.count += 1
+
+        if self.count == self.len:
+            self.is_left = False
+
+        return temp
+
+    def reset(self):
+        self.count = 0
