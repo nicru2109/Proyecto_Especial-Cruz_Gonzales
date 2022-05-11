@@ -4,7 +4,7 @@ from pyOpenBCI import OpenBCICyton
 import numpy as np
 import pygame
 
-#
+##
 Tipo_Señal = input('Indique el tipo de señal') #EOG/EMG
 Tipo_Movimiento = input('Indique el movimiento a realizar') #EOG: Parpadeo, Derecha, Izquierda.
                                                             #EMG: Arriba, Derecha, izquierda
@@ -38,6 +38,16 @@ def adquisicion_cal(sample):
 
     if len(inc_data) == 1700:
         board.stop_stream()
+
+if mov == 'Parpadeo':
+
+
+pygame.mixer.init()
+pygame.mixer.music.load("mp3//demo.mp3")
+pygame.mixer.music.play()
+time.sleep(1.5)
+fn.play_vid(mov)
+time.sleep(0.5)
 
 board.start_stream(adquisicion_cal)
 
@@ -81,3 +91,4 @@ else:
     print('Palabra Incorrecta')
 
 print('Umbral Calibrado Correctamente')
+
