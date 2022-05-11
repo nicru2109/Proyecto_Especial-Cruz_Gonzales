@@ -67,6 +67,7 @@ def adquisicion(sample):
     if len(inc_data) == tspan_exps:
         inc_data.clear()
         board.stop_stream()
+    # if len(Movimiento.array)
 
 def procesamiento(data):
     sig_arr_emg = sig.detrend(data[:, 0])
