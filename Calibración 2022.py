@@ -3,11 +3,9 @@ import Funciones as fn
 from pyOpenBCI import OpenBCICyton
 import numpy as np
 import pygame
+import time
 
 ##
-Tipo_Señal = input('Indique el tipo de señal') #EOG/EMG
-Tipo_Movimiento = input('Indique el movimiento a realizar') #EOG: Parpadeo, Derecha, Izquierda.
-                                                            #EMG: Arriba, Derecha, izquierda
 
 #Constantes
 s_SRate = 250  # Hertz
@@ -112,8 +110,11 @@ while 1:
 
     print('Umbral Calibrado Correctamente')
 
-    end = input('Desea continuar? (si/no)')
+    end = input('Desea terminar? (si/no)')
 
     if end == 'si':
         break
+
+
+##
 
