@@ -17,10 +17,10 @@ act = 0.25 # segundos
 filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 50], [15, 52])
 
-##
+
 
 # Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba.txt'), header=4)
-Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba2.txt'), header=4)
+Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba.txt'), header=4)
 Temp1 = Temp_read1[[' EXG Channel 0', ' EXG Channel 1', ' EXG Channel 2', ' EXG Channel 4',  ' EXG Channel 5']].to_numpy()
 Temp1 = Temp1[250:, :]
 
@@ -49,8 +49,8 @@ def procesamiento(data):
     sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
 
     # Suavizado
-    sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
-    sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
+    sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.2)
+    sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.2)
 
     # Primera derivada
 
@@ -59,8 +59,8 @@ def procesamiento(data):
 
     # Suavizado 2
 
-    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.2)
+    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.2)
     #
     # # Maximo de ventana
     #
@@ -115,6 +115,5 @@ plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
 
 
-#hola
 ##
 

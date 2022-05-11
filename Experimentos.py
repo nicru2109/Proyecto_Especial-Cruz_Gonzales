@@ -11,7 +11,7 @@ import time
 import pandas as pd
 
 #Definir la señal a ejecutar
-
+##
 sujeto = input('Indique el nombre de la sesión ')
 Tipo_Señal = input('Indique el tipo de señal (EOG o EMG) ')
 mode = input(('Indique el tipo de experimento ')) #train/test
@@ -91,8 +91,8 @@ def procesamiento(data):
     sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
 
     # Suavizado
-    sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
-    sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
+    sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.2)
+    sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.2)
 
     # Primera derivada
 
@@ -101,8 +101,8 @@ def procesamiento(data):
 
     # Suavizado 2
 
-    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.2)
+    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.2)
 
     # Maximo de ventana
 
