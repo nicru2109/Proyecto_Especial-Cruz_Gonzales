@@ -21,7 +21,7 @@ mode = input(('Indique el tipo de experimento ')) #train/test
 s_SRate = 250 # Hertz
 window = 1 # segundos
 act = 0.25 # segundos
-tspan_exps = 4 * s_SRate
+tspan_exps = 5 * s_SRate
 
 # Configuración de la board
 

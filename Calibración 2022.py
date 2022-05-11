@@ -47,9 +47,9 @@ while 1:
 
     if Tipo_Movimiento == 'Parpadeo':
         mov = 'P'
-    elif Tipo_Movimiento == 'Derecha' and Tipo_Señal == EOG:
+    elif Tipo_Movimiento == 'Derecha' and Tipo_Señal == 'EOG':
         mov = 'D'
-    elif Tipo_Movimiento == 'Izquierda' and Tipo_Señal == EOG:
+    elif Tipo_Movimiento == 'Izquierda' and Tipo_Señal == 'EOG':
         mov = 'I'
     elif Tipo_Movimiento == 'Izquierda':
         mov = 'CI'
