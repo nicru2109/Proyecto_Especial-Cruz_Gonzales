@@ -18,7 +18,7 @@ filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 50], [15, 52])
 
 
 # Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'prueba.txt'), header=4)
-Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'Derecha.txt'), header=4)
+Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'OpenBCI-RAW-2022-05-10_20-37-00.txt'), header=4)
 Temp1 = Temp_read1[[' EXG Channel 0', ' EXG Channel 1', ' EXG Channel 2', ' EXG Channel 4',  ' EXG Channel 5']].to_numpy()
 Temp1 = Temp1[250:, :]
 

@@ -2,6 +2,7 @@
 import time
 import numpy as np
 import pygame
+import pandas as pd
 
 ## Clases
 class pre_wind:
@@ -215,10 +216,13 @@ class proc_wind:
         self.data[-ind:, :] = np.array(inc_data)
 
 class sig_sym:
-    def __init__(self, data, sRate):
-        self.data = data
+    def __init__(self, path, sRate):
+
+        Temp_read1 = pd.read_csv(path, header=4)
+        self.data = Temp_read1[[' EXG Channel 0', ' EXG Channel 1', ' EXG Channel 2', ' EXG Channel 3', ' EXG Channel 4', ' EXG Channel 5', ' EXG Channel 6', ' EXG Channel 7']].to_numpy()
+
         self.delay = 1 / sRate
-        self.len = len(data)
+        self.len = len(self.data)
         self.count = 0
 
         if self.count < self.len:
@@ -227,7 +231,7 @@ class sig_sym:
 
         time.sleep(self.delay)
 
-        temp = data[self.count]
+        temp = self.data[self.count, :]
 
         self.count += 1
 
