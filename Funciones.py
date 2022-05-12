@@ -101,18 +101,18 @@ def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
 
         data = np.array([diff_der_eog_avg, diff_izq_eog_avg])
 
-        U_pos_der, U_pos_izq, U_neg_der, U_neg_izq = Calcular_Umbral(data, 'EOG')
+        U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq = Calcular_Umbral(data, 'EOG')
 
         if Tipo_Movimiento == 'Parpadeo':
-            U_Parpadeo = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq]
+            U_Parpadeo = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
             return U_Parpadeo
 
         elif Tipo_Movimiento == 'Derecha':
-            U_Derecha_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq]
+            U_Derecha_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
             return U_Derecha_EOG
 
         elif Tipo_Movimiento == 'Izquierda':
-            U_Izquierda_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq]
+            U_Izquierda_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
             return U_Izquierda_EOG
 
         else:
