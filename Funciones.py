@@ -40,25 +40,31 @@ def Calcular_Umbral (data, tipo):
         vent_der = data[0, :]
         vent_izq = data[1, :]
 
-        picos_der, n = sig.find_peaks(np.abs(vent_der), height=7)
-        picos_izq, n = sig.find_peaks(np.abs(vent_izq), height=7)
+        picos_der, n = sig.find_peaks(np.abs(vent_der))
+        picos_izq, n = sig.find_peaks(np.abs(vent_izq))
 
-        Der = np.array([vent_der[picos_der]])
-        Izq = np.array([vent_izq[picos_izq]])
+        h_Der = np.max(np.array([vent_der[picos_der]])) * 0.3
+        h_Izq = np.max(np.array([vent_izq[picos_izq]])) * 0.3
+
+        picos_der, n = sig.find_peaks(np.abs(vent_der), height=h_Der)
+        picos_izq, n = sig.find_peaks(np.abs(vent_izq), height=h_Izq)
+
+        Der = np.squeeze(np.array([vent_der[picos_der]]))
+        Izq = np.squeeze(np.array([vent_izq[picos_izq]]))
 
         der_pos = Der[Der > 0]
-        U_pos_der = (np.mean(der_pos) - a) + (np.mean(der_pos) - a)*0.30
+        U_pos_der = np.mean(der_pos) * 0.5
 
         der_neg = Der[Der < 0]
-        U_neg_der = (np.mean(der_neg) + a) + (np.mean(der_neg) + a)*0.30
+        U_neg_der = np.mean(der_neg) * 0.5
 
         izq_pos = Izq[Izq > 0]
-        U_pos_izq = (np.mean(izq_pos) - a) + (np.mean(izq_pos) - a)*0.30
+        U_pos_izq = np.mean(izq_pos) * 0.5
 
         izq_neg = Izq[Izq < 0]
-        U_neg_izq = (np.mean(izq_neg) + a) + (np.mean(izq_neg) + a)*0.15
+        U_neg_izq = np.mean(izq_neg) * 0.5
 
-        return U_pos_der, U_pos_izq, U_neg_der, U_neg_izq
+        return U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq
 
     elif tipo == 'EMG':
 
@@ -148,7 +154,7 @@ def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
         print('Palabra Incorrecta')
 
 # Identificar el patrón individual de EOG
-def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
+def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda, U_Parpadeo):
 
     #U_variable son arreglos con umbral de señal derecha positiva, izquierda positiva, derecha negativa
     #e izquierda negativa, en ese orden
@@ -161,8 +167,8 @@ def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda):
     if len(picos_izq) == 0 or len(picos_der) == 0:
         Mov = 'Nada'
 
-    elif ventana_der[picos_der[0]] < -4 and ventana_izq[picos_izq[0]] < -4 \
-            and ventana_der[picos_der[-1]] > 4 and ventana_izq[picos_izq[-1]] > 4:
+    elif ventana_der[picos_der[0]] < U_Parpadeo[2] and ventana_izq[picos_izq[0]] < U_Parpadeo[3] \
+            and ventana_der[picos_der[-1]] > U_Parpadeo[0] and ventana_izq[picos_izq[-1]] > U_Parpadeo[1]:
         Mov = 'P'
 
     elif ventana_der[picos_der[0]] < U_Derecha[2] and ventana_izq[picos_izq[0]] > U_Derecha[1] \

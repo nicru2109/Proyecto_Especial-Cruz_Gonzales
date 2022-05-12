@@ -7,6 +7,7 @@ import Funciones as fn
 import scipy.signal as sig
 from f_SignalProcFuncLibs import *
 
+##
 #Constantes
 s_SRate = 250  # Hertz
 window = 1 # segundos
@@ -15,14 +16,15 @@ act = 0.25 # segundos
 filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 50], [15, 52])
 
+##
 
-
-Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'parpadeo_nico.txt'), header=4)
+# Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'p_derecha.txt'), header=4)
+Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'p_parpadeo.txt'), header=4)
 # Temp_read1 = pd.read_csv(os.path.join('initial_tests', 'OpenBCI-RAW-2022-05-10_20-37-00.txt'), header=4)
 Temp1 = Temp_read1[[' EXG Channel 0', ' EXG Channel 1', ' EXG Channel 2', ' EXG Channel 4',  ' EXG Channel 5']].to_numpy()
 Temp1 = Temp1[250:, :]
 
-# v_1 = np.squeeze(Temp1[:, 4])
+##
 
 def procesamiento(data):
     sig_arr_emg = sig.detrend(data[:, 0])
@@ -98,12 +100,20 @@ def procesamiento(data):
 
     return np.array([sig_arr_emg, sig_der_emg, sig_izq_eog, diff_der_eog_avg, diff_izq_eog_avg])
 
+##
 
 data_pr = procesamiento(Temp1)
 
 # FFTs = np.fft.rfft(Temp1.T)
 # FFTs_freqs = np.fft.rfftfreq(len(Temp1), d=1./s_SRate)
 
+##
+plt.figure()
+plt.plot(Temp1[:, 3], 'b')
+plt.plot(Temp1[:, 4], 'r')
+plt.title('Señal cruda')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
 
 plt.figure()
 plt.plot(data_pr[3], 'b')
@@ -111,6 +121,81 @@ plt.plot(data_pr[4], 'r')
 plt.title('Señal procesada')
 plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
+
+##
+
+data_pr_w = procesamiento(Temp1[900:1300, :])
+
+plt.figure()
+plt.plot(Temp1[900:1300, 3], 'b')
+plt.plot(Temp1[900:1300, 4], 'r')
+plt.title('Señal cruda')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+plt.figure()
+plt.plot(data_pr_w[3], 'b')
+plt.plot(data_pr_w[4], 'r')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+
+##
+
+vent_der = data_pr[3]
+vent_izq = data_pr[4]
+
+picos_der, n = sig.find_peaks(np.abs(data_pr[3]))
+picos_izq, n = sig.find_peaks(np.abs(data_pr[4]))
+
+Der = np.squeeze(np.array([vent_der[picos_der]]))
+Izq = np.squeeze(np.array([vent_izq[picos_izq]]))
+
+plt.figure()
+plt.plot(data_pr[3], 'b')
+plt.plot(data_pr[4], 'r')
+plt.plot(picos_der, Der, '*')
+plt.plot(picos_izq, Izq, '*')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+
+##
+
+Der = np.max(np.array([vent_der[picos_der]])) * 0.3
+Izq = np.max(np.array([vent_izq[picos_izq]])) * 0.3
+
+picos_der, n = sig.find_peaks(np.abs(vent_der), height=Der)
+picos_izq, n = sig.find_peaks(np.abs(vent_izq), height=Izq)
+
+Der = np.squeeze(np.array([vent_der[picos_der]]))
+Izq = np.squeeze(np.array([vent_izq[picos_izq]]))
+
+plt.figure()
+plt.plot(data_pr[3], 'b')
+plt.plot(data_pr[4], 'r')
+plt.plot(picos_der, Der, '*y')
+plt.plot(picos_izq, Izq, '*y')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+a = 5
+
+der_pos = Der[Der > 0]
+U_pos_der = np.mean(der_pos) * 0.5
+
+der_neg = Der[Der < 0]
+U_neg_der = np.mean(der_neg) * 0.5
+
+##
+izq_pos = Izq[Izq > 0]
+U_pos_izq = np.mean(izq_pos) * 0.5
+
+izq_neg = Izq[Izq < 0]
+U_neg_izq = np.mean(izq_neg) * 0.5
 
 ##
 def Calcular_Umbral (data, tipo):

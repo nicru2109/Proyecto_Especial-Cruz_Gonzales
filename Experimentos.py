@@ -113,7 +113,7 @@ def procesamiento(data):
 
     # Movimiento EOG
 
-    mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG)
+    mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG, U_Parpadeo)
     Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     # Movimiento EMG
