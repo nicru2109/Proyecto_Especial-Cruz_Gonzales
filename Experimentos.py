@@ -14,7 +14,7 @@ import pandas as pd
 ##
 sujeto = input('Indique el nombre de la sesión ')
 Tipo_Señal = input('Indique el tipo de señal (EOG o EMG) ')
-mode = input(('Indique el tipo de experimento ')) #train/test
+mode = input('Indique el tipo de experimento ') #train/test
 
 ## Constantes
 

@@ -182,21 +182,6 @@ plt.title('Señal procesada')
 plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
 
-a = 5
-
-der_pos = Der[Der > 0]
-U_pos_der = np.mean(der_pos) * 0.5
-
-der_neg = Der[Der < 0]
-U_neg_der = np.mean(der_neg) * 0.5
-
-##
-izq_pos = Izq[Izq > 0]
-U_pos_izq = np.mean(izq_pos) * 0.5
-
-izq_neg = Izq[Izq < 0]
-U_neg_izq = np.mean(izq_neg) * 0.5
-
 ##
 def Calcular_Umbral (data, tipo):
 
