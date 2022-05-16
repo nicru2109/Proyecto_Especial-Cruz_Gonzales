@@ -98,6 +98,10 @@ def procesamiento(data):
     diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.2)
     diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.2)
 
+    mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG, U_Parpadeo)
+
+    print(mov)
+
     pr_data.append(np.array([sig_arr_emg[-int(s_SRate * act):], sig_der_emg[-int(s_SRate * act):], sig_izq_emg[-int(s_SRate * act):], diff_der_eog_avg[-int(s_SRate * act):], diff_izq_eog_avg[-int(s_SRate * act):]]))
 
 
@@ -128,10 +132,18 @@ data_pr = np.array(np.loadtxt('initial_tests//' + nombre + '.txt'))
 plt.figure()
 plt.plot(data_pr[3, :], 'b')
 plt.plot(data_pr[4, :], 'r')
-plt.axline(xy1=[0, U_Parpadeo[0]], slope=0, color='b')
-plt.axline(xy1=[0, U_Parpadeo[1]], slope=0, color='r')
-plt.axline(xy1=[0, U_Parpadeo[2]], slope=0, color='b')
-plt.axline(xy1=[0, U_Parpadeo[3]], slope=0, color='r')
+# plt.axline(xy1=[0, U_Parpadeo[0]], slope=0, color='b')
+# plt.axline(xy1=[0, U_Parpadeo[1]], slope=0, color='r')
+# plt.axline(xy1=[0, U_Parpadeo[2]], slope=0, color='b')
+# plt.axline(xy1=[0, U_Parpadeo[3]], slope=0, color='r')
+# plt.axline(xy1=[0, U_Derecha_EOG[0]], slope=0, color='b')
+# plt.axline(xy1=[0, U_Derecha_EOG[1]], slope=0, color='r')
+# plt.axline(xy1=[0, U_Derecha_EOG[2]], slope=0, color='b')
+# plt.axline(xy1=[0, U_Derecha_EOG[3]], slope=0, color='r')
+plt.axline(xy1=[0, U_Izquierda_EOG[0]], slope=0, color='b')
+plt.axline(xy1=[0, U_Izquierda_EOG[1]], slope=0, color='r')
+plt.axline(xy1=[0, U_Izquierda_EOG[2]], slope=0, color='b')
+plt.axline(xy1=[0, U_Izquierda_EOG[3]], slope=0, color='r')
 plt.title('Señal procesada')
 plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
