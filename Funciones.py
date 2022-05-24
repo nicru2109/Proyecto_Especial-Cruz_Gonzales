@@ -35,7 +35,6 @@ def f_AvFlt(data, w, t):
 def Calcular_Umbral (data, tipo):
 
     if tipo == 'EOG':
-        a = 5
 
         vent_der = data[0, :]
         vent_izq = data[1, :]

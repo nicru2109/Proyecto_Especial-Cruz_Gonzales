@@ -103,8 +103,8 @@ def procesamiento(data):
 
     print(mov)
 
-#    pr_data.append(np.array([sig_arr_emg[-int(s_SRate * act):], sig_der_emg[-int(s_SRate * act):], sig_izq_emg[-int(s_SRate * act):], diff_der_eog_avg[-int(s_SRate * act):], diff_izq_eog_avg[-int(s_SRate * act):]]))
-    pr_data.append(np.array([sig_arr_emg, sig_der_emg, sig_izq_emg, diff_der_eog_avg, diff_izq_eog_avg]))
+    pr_data.append(np.array([sig_arr_emg[-int(s_SRate * act):], sig_der_emg[-int(s_SRate * act):], sig_izq_emg[-int(s_SRate * act):], diff_der_eog_avg[-int(s_SRate * act):], diff_izq_eog_avg[-int(s_SRate * act):]]))
+#    pr_data.append(np.array([sig_arr_emg, sig_der_emg, sig_izq_emg, diff_der_eog_avg, diff_izq_eog_avg]))
 
 
 
@@ -131,13 +131,13 @@ if rec == 'si':
 
 data_pr = np.array(np.loadtxt('initial_tests//' + nombre + '.txt'))
 
-data_pr = np.array(procesamiento(data_pr))
+# data_pr = np.array(procesamiento(data_pr))
 
 ## Visualización inicial
 
 plt.figure()
-plt.plot(data_pr[3, 4], 'b')
-plt.plot(data_pr[3, 4], 'r')
+plt.plot(data_pr[3, 250:], 'b')
+plt.plot(data_pr[4, 250:], 'r')
 plt.axline(xy1=[0, U_Parpadeo[0]], slope=0, color='b')
 plt.axline(xy1=[0, U_Parpadeo[1]], slope=0, color='r')
 plt.axline(xy1=[0, U_Parpadeo[2]], slope=0, color='b')
