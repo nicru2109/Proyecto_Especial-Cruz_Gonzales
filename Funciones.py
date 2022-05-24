@@ -153,6 +153,68 @@ def Calibracion(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
     else:
         print('Palabra Incorrecta')
 
+def Calibracion_ventana(inc_data, Tipo_Señal, Tipo_Movimiento, s_SRate = 250):
+
+    filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
+    filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 57], [15, 59])
+
+    if Tipo_Señal == 'EOG':
+
+        data = inc_data[3:, :]
+
+        U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq = Calcular_Umbral(data, 'EOG')
+
+        if Tipo_Movimiento == 'Parpadeo':
+            U_Parpadeo = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
+            return U_Parpadeo
+
+        elif Tipo_Movimiento == 'Derecha':
+            U_Derecha_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
+            return U_Derecha_EOG
+
+        elif Tipo_Movimiento == 'Izquierda':
+            U_Izquierda_EOG = [U_pos_der, U_pos_izq, U_neg_der, U_neg_izq, h_Der, h_Izq]
+            return U_Izquierda_EOG
+
+        else:
+            print('Palabra Incorrecta')
+
+    elif Tipo_Señal == 'EMG':
+
+        if Tipo_Movimiento == 'Arriba':
+
+            sig_arr_emg = sig.detrend(inc_data[500:, 0])
+            sig_arr_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_arr_emg)
+            sig_arr_emg = np.abs(sig_arr_emg)
+
+            U_Arriba_EMG = Calcular_Umbral(sig_arr_emg, 'EMG')
+            return U_Arriba_EMG
+
+
+        elif Tipo_Movimiento == 'Derecha':
+            sig_der_emg = sig.detrend(inc_data[500:, 1])
+            sig_der_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_der_emg)
+            sig_der_emg = np.abs(sig_der_emg)
+
+            U_Derecha_EMG = Calcular_Umbral(sig_der_emg, 'EMG')
+            return U_Derecha_EMG
+
+        elif Tipo_Movimiento == 'Izquierda':
+
+            sig_izq_emg = sig.detrend(inc_data[500:, 2])
+            sig_izq_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_izq_emg)
+            sig_izq_emg = np.abs(sig_izq_emg)
+
+            U_Izquierda_EMG = Calcular_Umbral(sig_izq_emg, 'EMG')
+            return U_Izquierda_EMG
+
+        else:
+            print('Palabra Incorrecta')
+
+    else:
+        print('Palabra Incorrecta')
+
+
 # Identificar el patrón individual de EOG
 def identificar_movimiento(ventana_der,ventana_izq, U_Derecha, U_Izquierda, U_Parpadeo):
 

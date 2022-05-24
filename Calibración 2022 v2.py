@@ -1,57 +1,46 @@
 ##
-
-from Clases import *
-from f_SignalProcFuncLibs import *
-import numpy as np
 import Funciones as fn
 from pyOpenBCI import OpenBCICyton
-import random
-import scipy.signal as sig
-import cv2
+import numpy as np
+import pygame
 import time
-import pandas as pd
+from Clases import *
+from f_SignalProcFuncLibs import *
+import Funciones as fn
+import scipy.signal as sig
 import matplotlib.pyplot as plt
 
-## Constantes
+##
 
+#Constantes
 s_SRate = 250 # Hertz
 window = 1 # segundos
 act = 0.25 # segundos
 tspan_exps = 25 * s_SRate
 
-## Configuración de la board
 board = OpenBCICyton(port='COM3')
-uVolts_per_count = (4500000)/24/(2**23-1) #uV/count
+uVolts_per_count = (4500000) / 24 / (2 ** 23 - 1)  # uV/count
 
-## Filtros
+# Filtros
 filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 57], [15, 59])
-
-# Lista inicial
-inc_data = []
-
-# Lista procesada
-pr_data = []
-
-##
-# Cargar umbrales previamente calculados en calibracion
-U_Parpadeo = np.array(np.loadtxt('trhlds//U_Parpadeo.txt'))
-U_Derecha_EOG = np.array(np.loadtxt('trhlds//U_Derecha_EOG.txt'))
-U_Izquierda_EOG = np.array(np.loadtxt('trhlds//U_Izquierda_EOG.txt'))
-
-U_Arriba = np.array(np.loadtxt('trhlds//U_Arriba.txt'))
-U_Arriba = U_Arriba[0]
-
-U_Izquierda_EMG = np.array(np.loadtxt('trhlds//U_Izquierda_EMG.txt'))
-U_Izquierda_EMG = U_Izquierda_EMG[0]
-
-U_Derecha_EMG = np.array(np.loadtxt('trhlds//U_Derecha_EMG.txt'))
-U_Derecha_EMG = U_Derecha_EMG[0]
 
 Movimiento = pre_wind()
 ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
 
-def adquisicion(sample):
+#Apagar canales 4, 7 y 8
+
+# board.write_command('1')
+# board.write_command('2')
+# board.write_command('3')
+board.write_command('4')
+# board.write_command('5')
+# board.write_command('6')
+board.write_command('7')
+board.write_command('8')
+
+# Toma de datos
+def adquisicion_cal(sample):
     if len(inc_data) == 0:
         pygame.mixer.init()
         pygame.mixer.music.load("mp3//go.mp3")
@@ -62,9 +51,8 @@ def adquisicion(sample):
     if (len(inc_data) % int(s_SRate * act)) == 0:
         ventana.refresh(inc_data[-int(s_SRate * act):])
         procesamiento(ventana.data)
-    if len(inc_data) == tspan_exps:
+    if len(inc_data) == 2000:
         board.stop_stream()
-
 
 def procesamiento(data):
     sig_arr_emg = sig.detrend(data[:, 0])
@@ -99,23 +87,44 @@ def procesamiento(data):
     diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.2)
     diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.2)
 
-    mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG, U_Parpadeo)
+    pr_data.append(np.array([sig_arr_emg[-int(s_SRate * act):], sig_der_emg[-int(s_SRate * act):], sig_izq_emg[-int(s_SRate * act):], diff_der_eog_avg[-int(s_SRate * act):], diff_izq_eog_avg[-int(s_SRate * act):]]))
 
-    print(mov)
+nombre = input('Indique el nombre del archivo')
 
-#    pr_data.append(np.array([sig_arr_emg[-int(s_SRate * act):], sig_der_emg[-int(s_SRate * act):], sig_izq_emg[-int(s_SRate * act):], diff_der_eog_avg[-int(s_SRate * act):], diff_izq_eog_avg[-int(s_SRate * act):]]))
-    pr_data.append(np.array([sig_arr_emg, sig_der_emg, sig_izq_emg, diff_der_eog_avg, diff_izq_eog_avg]))
+while 1:
+
+    inc_data = []
+    pr_data = []
+
+    Tipo_Señal = input('Indique el tipo de señal')  # EOG/EMG
+    Tipo_Movimiento = input('Indique el movimiento a realizar')  # EOG: Parpadeo, Derecha, Izquierda.
+    # EMG: Arriba, Derecha, izquierda
+
+    if Tipo_Movimiento == 'Parpadeo':
+        mov = 'P'
+    elif Tipo_Movimiento == 'Derecha' and Tipo_Señal == 'EOG':
+        mov = 'D'
+    elif Tipo_Movimiento == 'Izquierda' and Tipo_Señal == 'EOG':
+        mov = 'I'
+    elif Tipo_Movimiento == 'Izquierda':
+        mov = 'CI'
+    elif Tipo_Movimiento == 'Derecha':
+        mov = 'CD'
+    elif Tipo_Movimiento == 'Arriba':
+        mov = 'MF'
 
 
+    pygame.mixer.init()
+    pygame.mixer.music.load("mp3//demo.mp3")
+    pygame.mixer.music.play()
+    time.sleep(1.5)
+    fn.play_vid(mov)
+    time.sleep(0.5)
+    pygame.mixer.music.load("mp3//prep.mp3")
+    pygame.mixer.music.play()
+    time.sleep(3)
 
-##
-
-rec = input('Desea tomar datos? (si/no) ')
-nombre = input('Indique el nombre del archivo ')
-
-##
-if rec == 'si':
-    board.start_stream(adquisicion)
+    board.start_stream(adquisicion_cal)
 
     l = len(pr_data)
     z = pr_data[0].shape[1]
@@ -125,44 +134,56 @@ if rec == 'si':
     for i in range(l):
         data[:, (i * z):((i + 1) * z)] = pr_data[i]
 
+    # Calculo de umbral
+    Umbral = fn.Calibracion_ventana(data, Tipo_Señal, Tipo_Movimiento)
+
+    #Guardar umbral en variable
+    if Tipo_Señal == 'EOG':
+        if Tipo_Movimiento == 'Parpadeo':
+            np.savetxt('trhlds//U_Parpadeo.txt', Umbral)
+            U_Parpadeo = Umbral
+
+        elif Tipo_Movimiento == 'Derecha':
+            np.savetxt('trhlds//U_Derecha_EOG.txt', Umbral)
+            U_Derecha_EOG = Umbral
+
+        elif Tipo_Movimiento == 'Izquierda':
+            np.savetxt('trhlds//U_Izquierda_EOG.txt', Umbral)
+            U_Izquierda_EOG = Umbral
+        else:
+            print('Palabra incorrecta')
+
+    else:
+        print('Palabra Incorrecta')
+
+    print('Umbral Calibrado Correctamente')
+
     np.savetxt('initial_tests//' + nombre + '.txt', data)
 
-##
+    end = input('Desea terminar? (si/no)')
 
-data_pr = np.array(np.loadtxt('initial_tests//' + nombre + '.txt'))
+    if end == 'si':
+        break
 
-data_pr = np.array(procesamiento(data_pr))
 
-## Visualización inicial
+## Umbrales
+
+U_Parpadeo = np.array(np.loadtxt('trhlds//U_Parpadeo.txt'))
+U_Derecha_EOG = np.array(np.loadtxt('trhlds//U_Derecha_EOG.txt'))
+U_Izquierda_EOG = np.array(np.loadtxt('trhlds//U_Izquierda_EOG.txt'))
+
+## Carga y procesamiento
+
+Temp1 = np.array(np.loadtxt('initial_tests//' + nombre + '.txt'))
+Temp1 = Temp1[:, 250:]
 
 plt.figure()
-plt.plot(data_pr[3, 4], 'b')
-plt.plot(data_pr[3, 4], 'r')
+plt.plot(Temp1[3], 'b')
+plt.plot(Temp1[4], 'r')
 plt.axline(xy1=[0, U_Parpadeo[0]], slope=0, color='b')
 plt.axline(xy1=[0, U_Parpadeo[1]], slope=0, color='r')
 plt.axline(xy1=[0, U_Parpadeo[2]], slope=0, color='b')
 plt.axline(xy1=[0, U_Parpadeo[3]], slope=0, color='r')
-
-plt.figure()
-plt.plot(data_pr[3, 250:], 'b')
-plt.plot(data_pr[4, 250:], 'r')
-plt.axline(xy1=[0, U_Derecha_EOG[0]], slope=0, color='b')
-plt.axline(xy1=[0, U_Derecha_EOG[1]], slope=0, color='r')
-plt.axline(xy1=[0, U_Derecha_EOG[2]], slope=0, color='b')
-plt.axline(xy1=[0, U_Derecha_EOG[3]], slope=0, color='r')
-
-plt.figure()
-plt.plot(data_pr[3, 250:], 'b')
-plt.plot(data_pr[4, 250:], 'r')
-plt.axline(xy1=[0, U_Izquierda_EOG[0]], slope=0, color='b')
-plt.axline(xy1=[0, U_Izquierda_EOG[1]], slope=0, color='r')
-plt.axline(xy1=[0, U_Izquierda_EOG[2]], slope=0, color='b')
-plt.axline(xy1=[0, U_Izquierda_EOG[3]], slope=0, color='r')
-
 plt.title('Señal procesada')
 plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
-
-
-##
-

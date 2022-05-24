@@ -37,7 +37,7 @@ def adquisicion_cal(sample):
 
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
-    if len(inc_data) == 1700:
+    if len(inc_data) == 2000:
         board.stop_stream()
 
 cal = input('Desea calibrar? (si/no)')
@@ -192,12 +192,12 @@ data_pr = procesamiento(Temp1)
 
 ## Visualización inicial
 
-plt.figure()
-plt.plot(Temp1[:, 4], 'b')
-plt.plot(Temp1[:, 5], 'r')
-plt.title('Señal cruda')
-plt.xlabel('No. Muestra')
-plt.ylabel('Amplitud [mV]')
+# plt.figure()
+# plt.plot(Temp1[:, 4], 'b')
+# plt.plot(Temp1[:, 5], 'r')
+# plt.title('Señal cruda')
+# plt.xlabel('No. Muestra')
+# plt.ylabel('Amplitud [mV]')
 
 plt.figure()
 plt.plot(data_pr[3], 'b')
@@ -209,3 +209,28 @@ plt.axline(xy1=[0, U_Parpadeo[3]], slope=0, color='r')
 plt.title('Señal procesada')
 plt.xlabel('No. Muestra')
 plt.ylabel('Amplitud [mV]')
+
+plt.figure()
+plt.plot(data_pr[3], 'b')
+plt.plot(data_pr[4], 'r')
+plt.axline(xy1=[0, U_Derecha_EOG[0]], slope=0, color='b')
+plt.axline(xy1=[0, U_Derecha_EOG[1]], slope=0, color='r')
+plt.axline(xy1=[0, U_Derecha_EOG[2]], slope=0, color='b')
+plt.axline(xy1=[0, U_Derecha_EOG[3]], slope=0, color='r')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+plt.figure()
+plt.plot(data_pr[3], 'b')
+plt.plot(data_pr[4], 'r')
+plt.axline(xy1=[0, U_Izquierda_EOG[0]], slope=0, color='b')
+plt.axline(xy1=[0, U_Izquierda_EOG[1]], slope=0, color='r')
+plt.axline(xy1=[0, U_Izquierda_EOG[2]], slope=0, color='b')
+plt.axline(xy1=[0, U_Izquierda_EOG[3]], slope=0, color='r')
+plt.title('Señal procesada')
+plt.xlabel('No. Muestra')
+plt.ylabel('Amplitud [mV]')
+
+##
+
