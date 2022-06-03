@@ -224,6 +224,17 @@ class proc_wind:
         self.data[:-ind, :] = temp
         self.data[-ind:, :] = np.array(inc_data)
 
+class proc_wind_v2:
+    def __init__(self, channels, window, act):
+        self.data = np.zeros((channels, window))
+        self.inc_lenght = act
+
+    def refresh(self, inc_data):
+        ind = self.inc_lenght
+        temp = self.data[:, ind:]
+        self.data[:, :-ind] = temp
+        self.data[:, -ind:] = np.array(inc_data)
+
 class sig_sym:
     def __init__(self, path, sRate):
 
@@ -241,6 +252,33 @@ class sig_sym:
         time.sleep(self.delay)
 
         temp = self.data[self.count, :]
+
+        self.count += 1
+
+        if self.count == self.len:
+            self.is_left = False
+
+        return temp
+
+    def reset(self):
+        self.count = 0
+
+class sig_sym_txt:
+    def __init__(self, path, sRate):
+
+        self.data = np.array(np.loadtxt('initial_tests//' + path + '.txt'))
+
+        self.delay = 1 / sRate
+        self.len = self.data.shape[1]
+        self.count = 0
+
+        if self.count < self.len:
+            self.is_left = True
+    def get(self):
+
+        # time.sleep(self.delay)
+
+        temp = self.data[:, self.count]
 
         self.count += 1
 

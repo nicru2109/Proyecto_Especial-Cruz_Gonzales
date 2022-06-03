@@ -207,58 +207,60 @@ def adquisicion(sample):
 
 
 def procesamiento(data):
-    sig_arr_emg = sig.detrend(data[:, 0])
-    sig_der_emg = sig.detrend(data[:, 1])
-    sig_izq_emg = sig.detrend(data[:, 2])
-    sig_der_eog = sig.detrend(data[:, 4])
-    sig_izq_eog = sig.detrend(data[:, 5])
-
-    # Filtro
-
-    sig_izq_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_izq_emg)
-    sig_der_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_der_emg)
-    sig_arr_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_arr_emg)
-    sig_izq_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_izq_eog)
-    sig_der_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_der_eog)
-
-    # Artefactos en los bordes
-    sig_arr_emg = sig_arr_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    sig_der_emg = sig_der_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    sig_izq_emg = sig_izq_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    sig_der_eog = sig_der_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-    sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-
-    # Suavizado
-    sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
-    sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
-
-    # Primera derivada
-
-    diff_izq_eog = np.diff(sig_izq_eog_avg)
-    diff_der_eog = np.diff(sig_der_eog_avg)
-
-    # Suavizado 2
-
-    diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
-    diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
-
-    # Maximo de ventana
-
-    diff_izq_emg_avg = np.max(sig_izq_emg)
-    diff_der_emg_avg = np.max(sig_der_emg)
-    diff_arr_emg_avg = np.max(sig_arr_emg)
+    # sig_arr_emg = sig.detrend(data[:, 0])
+    # sig_der_emg = sig.detrend(data[:, 1])
+    # sig_izq_emg = sig.detrend(data[:, 2])
+    # sig_der_eog = sig.detrend(data[:, 4])
+    # sig_izq_eog = sig.detrend(data[:, 5])
+    diff_der_eog_avg = data[:, 3]
+    diff_izq_eog_avg = data[:, 4]
+    #
+    # # Filtro
+    #
+    # sig_izq_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_izq_emg)
+    # sig_der_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_der_emg)
+    # sig_arr_emg = signal.sosfiltfilt(filt_FiltSOS_emg, sig_arr_emg)
+    # sig_izq_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_izq_eog)
+    # sig_der_eog = signal.sosfiltfilt(filt_FiltSOS_eog, sig_der_eog)
+    #
+    # # Artefactos en los bordes
+    # sig_arr_emg = sig_arr_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    # sig_der_emg = sig_der_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    # sig_izq_emg = sig_izq_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    # sig_der_eog = sig_der_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    # sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
+    #
+    # # Suavizado
+    # sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
+    # sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
+    #
+    # # Primera derivada
+    #
+    # diff_izq_eog = np.diff(sig_izq_eog_avg)
+    # diff_der_eog = np.diff(sig_der_eog_avg)
+    #
+    # # Suavizado 2
+    #
+    # diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
+    # diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
+    #
+    # # Maximo de ventana
+    #
+    # diff_izq_emg_avg = np.max(sig_izq_emg)
+    # diff_der_emg_avg = np.max(sig_der_emg)
+    # diff_arr_emg_avg = np.max(sig_arr_emg)
 
     # Movimiento EOG
 
-    Mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG)
+    Mov = fn.identificar_movimiento(diff_der_eog_avg, diff_izq_eog_avg, U_Derecha_EOG, U_Izquierda_EOG, U_Parpadeo)
     print(Mov, sym_sig.count)
 
     Movimiento.actualizar(Mov)
 
 ## Inicio de toma de datos
-ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
+ventana = proc_wind(5, int(s_SRate * window), int(act * s_SRate))
 Movimiento = pre_wind()
-sym_sig = sig_sym('initial_tests/OpenBCI-RAW-2022-05-10_20-37-00.txt', s_SRate)
+sym_sig = sig_sym_txt('prueba_balles_v2', s_SRate)
 
 # board.start_stream(adquisicion)
 
@@ -268,10 +270,10 @@ plt.show()
 
 while sym_sig.is_left:
     data = sym_sig.get()
-    adquisicion(data)
     ax.cla()
-    ax.plot(ventana.data[:, 5])
-    ax.plot(ventana.data[:, 6])
+    ax.plot(ventana.data[:, 3])
+    ax.plot(ventana.data[:, 4])
+    adquisicion(data)
 
 
 ##
