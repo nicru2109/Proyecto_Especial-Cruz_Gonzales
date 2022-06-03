@@ -10,207 +10,185 @@ class pre_wind:
     def __init__(self):
         self.data = []
         self.count = 0
-        self.array = []
+        self.mov = 'Nada'
         self.e1 = 'Nada'
         self.e2 = 'Nada'
-
-    def add_null(self):
-        self.array.append('Nada')
+        self.last = ['Nada', 'Nada']
 
     def actualizar(self, Var = 'Nada', mode='train', sig_type='EOG'):
         self.count += 1
-        if Var != 'Nada':
-            if self.e1 == 'Nada':
-                self.e1 = Var
+
+        self.last.append(Var)
+        self.last.pop(0)
+
+        if not (self.last[0] != 'Nada' and self.last[1] != 'Nada' and self.last[0] == self.last[1]):
+
+
+
+            if Var != 'Nada':
+                if self.e1 == 'Nada':
+                    self.e1 = Var
+                    self.count = 0
+                else:
+                    self.e2 = Var
+
+            if self.e2 != 'Nada':
+
+                if self.e1 == 'P' and self.e2 == 'P':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p1.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+                    self.mov = 'PP'
+
+
+                elif self.e1 == 'P' and self.e2 == 'I':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p2.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+                    self.mov = 'PI'
+
+                elif self.e1 == 'P' and self.e2 == 'D':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p3.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+                    self.mov = 'PD'
+
+                elif self.e1 == 'I' and self.e2 == 'P':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p4.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+                    self.mov = 'IP'
+
+                elif self.e1 == 'D' and self.e2 == 'P':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p5.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+                    self.mov = 'DP'
+
+                elif self.e1 == 'MF' and self.e2 == 'MF':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p6.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+
+                    self.mov = 'MF'
+
+                elif self.e1 == 'CD' and self.e2 == 'CD':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p7.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+
+                    self.mov = 'CD'
+
+
+                elif self.e1 == 'CI' and self.e2 == 'CI':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p8.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+
+                    self.mov = 'CI'
+
+                elif self.e1 == 'C' and self.e2 == 'C':
+                    # pygame.mixer.init()
+                    # pygame.mixer.music.load("mp3//p9.mp3")
+                    # pygame.mixer.music.play()
+                    # time.sleep(2)
+                    # pygame.mixer.music.stop()
+
+                    self.mov = 'C'
+
                 self.count = 0
-            else:
-                self.e2 = Var
+                self.e1 = 'Nada'
+                self.e2 = 'Nada'
 
-        if self.e2 != 'Nada':
+            if self.count == 10:
 
-            if self.e1 == 'P' and self.e2 == 'P':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p1.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-                print('PP')
-                if mode == 'test':
-                    self.array.append('PP')
+                if self.e1 != 'Nada':
 
+                    if self.e1 == 'P':
 
-            elif self.e1 == 'P' and self.e2 == 'I':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p2.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-                print('PI')
+                        # pygame.mixer.init()
+                        # pygame.mixer.music.load("mp3//p10.mp3")
+                        # pygame.mixer.music.play()
+                        # time.sleep(2)
+                        # pygame.mixer.music.stop()
+                        self.mov = 'P'
 
-                if mode == 'test':
-                    self.array.append('PI')
+                    elif self.e1 == 'D':
+                        # pygame.mixer.init()
+                        # pygame.mixer.music.load("mp3//p11.mp3")
+                        # pygame.mixer.music.play()
+                        # time.sleep(2)
+                        # pygame.mixer.music.stop()
+                        self.mov = 'D'
 
-            elif self.e1 == 'P' and self.e2 == 'D':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p3.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-                print('PD')
+                    elif self.e1 == 'I':
+                        # pygame.mixer.init()
+                        # pygame.mixer.music.load("mp3//p12.mp3")
+                        # pygame.mixer.music.play()
+                        # time.sleep(2)
+                        # pygame.mixer.music.stop()
 
-                if mode == 'test':
-                    self.array.append('PD')
+                        self.mov = 'I'
 
-            elif self.e1 == 'I' and self.e2 == 'P':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p4.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-                print('IP')
+                    # elif self.e1 == 'MF':
+                    #     pygame.mixer.init()
+                    #     pygame.mixer.music.load("mp3//p6.mp3")
+                    #     pygame.mixer.music.play()
+                    #     time.sleep(2)
+                    #     pygame.mixer.music.stop()
+                    #
+                    #     if mode == 'test':
+                    #         self.array.append('MF')
+                    #
+                    # elif self.e1 == 'CD':
+                    #     pygame.mixer.init()
+                    #     pygame.mixer.music.load("mp3//p7.mp3")
+                    #     pygame.mixer.music.play()
+                    #     time.sleep(2)
+                    #     pygame.mixer.music.stop()
+                    #
+                    #     if mode == 'test':
+                    #         self.array.append('CD')
+                    #
+                    # elif self.e1 == 'CI':
+                    #     pygame.mixer.init()
+                    #     pygame.mixer.music.load("mp3//p8.mp3")
+                    #     pygame.mixer.music.play()
+                    #     time.sleep(2)
+                    #     pygame.mixer.music.stop()
+                    #
+                    #     if mode == 'test':
+                    #         self.array.append('CI')
+                    #
+                    # elif self.e1 == 'C':
+                    #     pygame.mixer.init()
+                    #     pygame.mixer.music.load("mp3//p9.mp3")
+                    #     pygame.mixer.music.play()
+                    #     time.sleep(2)
+                    #     pygame.mixer.music.stop()
+                    #
+                    #     if mode == 'test':
+                    #         self.array.append('C')
 
-                if mode == 'test':
-                    self.array.append('IP')
-
-            elif self.e1 == 'D' and self.e2 == 'P':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p5.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-                print('DP')
-
-                if mode == 'test':
-                    self.array.append('DP')
-
-            elif self.e1 == 'MF' and self.e2 == 'MF':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p6.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-
-                if mode == 'test':
-                    self.array.append('MF')
-
-            elif self.e1 == 'CD' and self.e2 == 'CD':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p7.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-
-                if mode == 'test':
-                    self.array.append('CD')
-
-
-            elif self.e1 == 'CI' and self.e2 == 'CI':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p8.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-
-                if mode == 'test':
-                    self.array.append('CI')
-
-            elif self.e1 == 'C' and self.e2 == 'C':
-                # pygame.mixer.init()
-                # pygame.mixer.music.load("mp3//p9.mp3")
-                # pygame.mixer.music.play()
-                # time.sleep(2)
-                # pygame.mixer.music.stop()
-
-                if mode == 'test':
-                    self.array.append('C')
-
-            self.count = 0
-            self.e1 = 'Nada'
-            self.e2 = 'Nada'
-
-        if self.count == 10:
-
-            if self.e1 != 'Nada':
-
-                if self.e1 == 'P':
-
-                    # pygame.mixer.init()
-                    # pygame.mixer.music.load("mp3//p10.mp3")
-                    # pygame.mixer.music.play()
-                    # time.sleep(2)
-                    # pygame.mixer.music.stop()
-                    print('P')
-
-                    if mode == 'test':
-                        self.array.append('P')
-
-                elif self.e1 == 'D':
-                    # pygame.mixer.init()
-                    # pygame.mixer.music.load("mp3//p11.mp3")
-                    # pygame.mixer.music.play()
-                    # time.sleep(2)
-                    # pygame.mixer.music.stop()
-                    print('D')
-
-                    if mode == 'test':
-                        self.array.append('D')
-
-                elif self.e1 == 'I':
-                    # pygame.mixer.init()
-                    # pygame.mixer.music.load("mp3//p12.mp3")
-                    # pygame.mixer.music.play()
-                    # time.sleep(2)
-                    # pygame.mixer.music.stop()
-                    print('I')
-
-                    if mode == 'test':
-                        self.array.append('I')
-
-                # elif self.e1 == 'MF':
-                #     pygame.mixer.init()
-                #     pygame.mixer.music.load("mp3//p6.mp3")
-                #     pygame.mixer.music.play()
-                #     time.sleep(2)
-                #     pygame.mixer.music.stop()
-                #
-                #     if mode == 'test':
-                #         self.array.append('MF')
-                #
-                # elif self.e1 == 'CD':
-                #     pygame.mixer.init()
-                #     pygame.mixer.music.load("mp3//p7.mp3")
-                #     pygame.mixer.music.play()
-                #     time.sleep(2)
-                #     pygame.mixer.music.stop()
-                #
-                #     if mode == 'test':
-                #         self.array.append('CD')
-                #
-                # elif self.e1 == 'CI':
-                #     pygame.mixer.init()
-                #     pygame.mixer.music.load("mp3//p8.mp3")
-                #     pygame.mixer.music.play()
-                #     time.sleep(2)
-                #     pygame.mixer.music.stop()
-                #
-                #     if mode == 'test':
-                #         self.array.append('CI')
-                #
-                # elif self.e1 == 'C':
-                #     pygame.mixer.init()
-                #     pygame.mixer.music.load("mp3//p9.mp3")
-                #     pygame.mixer.music.play()
-                #     time.sleep(2)
-                #     pygame.mixer.music.stop()
-                #
-                #     if mode == 'test':
-                #         self.array.append('C')
-
-            self.count = 0
-            self.e1 = 'Nada'
-            self.e2 = 'Nada'
-
-            print('Nada')
+                self.count = 0
+                self.e1 = 'Nada'
+                self.e2 = 'Nada'
 
 
 class proc_wind:

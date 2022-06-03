@@ -12,9 +12,9 @@ import pandas as pd
 
 #Definir la señal a ejecutar
 ##
-sujeto = input('Indique el nombre de la sesión ')
-Tipo_Señal = input('Indique el tipo de señal (EOG o EMG) ')
-mode = input('Indique el tipo de experimento ') #train/test
+sujeto = input('Indique el número del sujeto: ')
+Tipo_Señal = input('Indique el tipo de señal (EOG o EMG): ')
+mode = input('Indique el tipo de experimento: ') #train/test
 
 ## Constantes
 
@@ -34,7 +34,7 @@ filt_FiltSOS_eog = f_GetIIRFilter(s_SRate, [0.015, 10], [0.01, 12])
 filt_FiltSOS_emg = f_GetIIRFilter(s_SRate, [20, 57], [15, 59])
 
 # Lista inicial
-inc_data = []
+
 
 # Cargar umbrales previamente calculados en calibracion
 
@@ -54,20 +54,21 @@ U_Derecha_EMG = U_Derecha_EMG[0]
 
 #
 def adquisicion(sample):
-    if len(inc_data) == 0:
+    if len(inc_data) == 500:
         pygame.mixer.init()
         pygame.mixer.music.load("mp3//go.mp3")
         pygame.mixer.music.play()
 
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
-    if (len(inc_data) % int(s_SRate * act)) == 0:
-        ventana.refresh(inc_data[-int(s_SRate * act):])
-        procesamiento(ventana.data)
-    if len(inc_data) == tspan_exps:
-        inc_data.clear()
-        board.stop_stream()
-    # if len(Movimiento.array)
+    if len(inc_data) > 500:
+        if ((len(inc_data) - 500) % int(s_SRate * act)) == 0:
+            ventana.refresh(inc_data[-int(s_SRate * act):])
+            procesamiento(ventana.data)
+
+        if ((len(inc_data) - 500) == tspan_exps) or Movimiento.mov != 'Nada':
+            inc_data.clear()
+            board.stop_stream()
 
 def procesamiento(data):
     sig_arr_emg = sig.detrend(data[:, 0])
@@ -120,12 +121,10 @@ def procesamiento(data):
 
     if diff_arr_emg_avg > U_Arriba and not diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG:
         mov_emg = 'MF'
-        print(mov_emg)
-        Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
+        Movimiento.actualizar(mov, mode=mode, sig_type=Tipo_Señal)
 
     elif diff_der_emg_avg > U_Derecha_EMG and not diff_izq_emg_avg > U_Izquierda_EMG and not diff_arr_emg_avg > U_Arriba:
         mov_emg = 'CD'
-        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     elif diff_izq_emg_avg > U_Izquierda_EMG and not diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
@@ -135,7 +134,6 @@ def procesamiento(data):
 
     elif diff_izq_emg_avg > U_Izquierda_EMG and diff_der_emg_avg > U_Derecha_EMG and not diff_arr_emg_avg > U_Arriba:
         mov_emg = 'C'
-        print(mov_emg)
         Movimiento.actualizar(mov, mode=mode, sig_type= Tipo_Señal)
 
     else:
@@ -166,14 +164,20 @@ if mode == 'train':
     elif Tipo_Señal == "EMG" :
         movs_list = fn.mov_list(mode=mode, **dic_EMG)
 
-Movimiento = pre_wind()
-ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
+
+movs_id = []
 
 fn.play_vid('C')
 
+pygame.mixer.init()
+
 for i in range(len(movs_list)):
 
-    pygame.mixer.init()
+    pygame.mixer.music.load("mp3//" + movs_list[i] + ".mp3")
+    pygame.mixer.music.play()
+
+    time.sleep(1.5)
+
     pygame.mixer.music.load("mp3//demo.mp3")
     pygame.mixer.music.play()
 
@@ -188,18 +192,22 @@ for i in range(len(movs_list)):
 
     time.sleep(3)
 
-
+    Movimiento = pre_wind()
+    ventana = proc_wind(8, int(s_SRate * window), int(act * s_SRate))
+    inc_data = []
 
     board.start_stream(adquisicion)
 
-    if len(Movimiento.array) < i + 1:
-        Movimiento.add_null()
+    movs_id.append(Movimiento.mov)
 
-result = {'Anotacion': movs_list, 'Resultado': Movimiento.array}
+    np.savetxt('initial_tests//S' + sujeto + '//' + movs_list[i] + str(i) + '.txt', np.array(inc_data))
 
-df_result = pd.DataFrame(result)
+if mode == 'test':
+    result = {'Anotacion': movs_list, 'Resultado': movs_id}
 
-df_result.to_csv('resultados//' + sujeto + '.csv')
+    df_result = pd.DataFrame(result)
+
+    df_result.to_csv('resultados//' + sujeto + '.csv')
 
 
 
