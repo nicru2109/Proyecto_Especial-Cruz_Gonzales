@@ -23,8 +23,6 @@ class pre_wind:
 
         if not (self.last[0] != 'Nada' and self.last[1] != 'Nada' and self.last[0] == self.last[1]):
 
-
-
             if Var != 'Nada':
                 if self.e1 == 'Nada':
                     self.e1 = Var
