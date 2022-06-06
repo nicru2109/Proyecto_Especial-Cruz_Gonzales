@@ -149,10 +149,20 @@ def procesamiento(data):
     sig_izq_emg = sig_izq_emg[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
     sig_der_eog = sig_der_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
     sig_izq_eog = sig_izq_eog[int(0.1 * window * s_SRate):-int(0.1 * window * s_SRate)]
-
+    #
     # Suavizado
     sig_izq_eog_avg = fn.f_AvFlt(sig_izq_eog, s_SRate, 0.08)
     sig_der_eog_avg = fn.f_AvFlt(sig_der_eog, s_SRate, 0.08)
+
+    # # Primera derivada
+
+    diff_izq_eog = np.diff(sig_izq_eog_avg)
+    diff_der_eog = np.diff(sig_der_eog_avg)
+    #
+    # # Suavizado 2
+    #
+    # diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)
+    # diff_der_eog_avg = fn.f_AvFlt(diff_der_eog, s_SRate, 0.08)
 
     axs[0].cla()
     axs[1].cla()
@@ -166,17 +176,17 @@ def procesamiento(data):
     axs[1].set_ylim([-200, 200])
     axs[2].plot(sig_izq_emg)
     axs[2].set_ylim([-200, 200])
-    axs[3].plot(sig_der_eog_avg)
-    axs[3].set_ylim([-400, 400])
-    axs[4].plot(sig_izq_eog_avg)
-    axs[4].set_ylim([-400, 400])
+    axs[3].plot(diff_izq_eog)
+    axs[3].set_ylim([-30, 30])
+    axs[4].plot(diff_der_eog)
+    axs[4].set_ylim([-30, 30])
 
     plt.pause(0.1)
     # # Primera derivada
     #
     # diff_izq_eog = np.diff(sig_izq_eog_avg)
     # diff_der_eog = np.diff(sig_der_eog_avg)
-    #
+
     # # Suavizado 2
     #
     # diff_izq_eog_avg = fn.f_AvFlt(diff_izq_eog, s_SRate, 0.08)

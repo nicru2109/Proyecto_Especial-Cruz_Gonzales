@@ -48,9 +48,9 @@ def adquisicion_cal(sample):
 
     inc_data.append(np.array(sample.channels_data) * uVolts_per_count)
 
-    if (len(inc_data) % int(s_SRate * act)) == 0:
-        ventana.refresh(inc_data[-int(s_SRate * act):])
-        procesamiento(ventana.data)
+    # if (len(inc_data) % int(s_SRate * act)) == 0:
+    #     ventana.refresh(inc_data[-int(s_SRate * act):])
+    #     procesamiento(ventana.data)
 
     if len(inc_data) == 2000:
         board.stop_stream()
