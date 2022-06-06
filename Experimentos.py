@@ -67,7 +67,6 @@ def adquisicion(sample):
             procesamiento(ventana.data)
 
         if ((len(inc_data) - 500) == tspan_exps) or Movimiento.mov != 'Nada':
-            inc_data.clear()
             board.stop_stream()
 
 def procesamiento(data):
